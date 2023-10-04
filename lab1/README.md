@@ -8,3 +8,5 @@ cmake ../CMakelists.txt
 make
 ./main
 ```
+## Ссылка на отчет
+```https://docs.google.com/document/d/1as-THK7k5dsdXGc3j-ieB2D-ivuMEjZL/edit?usp=sharing&ouid=101030734348693683939&rtpof=true&sd=true```
