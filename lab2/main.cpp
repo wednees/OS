@@ -14,10 +14,7 @@ int main(int argc, char* argv[]) {
     Data* th_data = new Data [number_of_threads];
     int points_per_thread = points / number_of_threads;
 
-    struct timeval start, end;
-    int seconds, micro_seconds;
-
-    gettimeofday(&start, NULL);
+    clock_t start = clock();
 
     for(int i = 0; i < number_of_threads; ++i) {
         th_data[i].in_points = 0;
@@ -36,7 +33,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    gettimeofday(&end, NULL);
+    clock_t end = clock();;
 
     int points_inside_circle = 0;
     for(int i = 0; i < number_of_threads; ++i) {
@@ -49,9 +46,8 @@ int main(int argc, char* argv[]) {
 
     cout << fixed << setprecision(3) << "Area of the circle: " << area_of_circle << "; Radius: " << radius << endl;
 
-    seconds = end.tv_sec - start.tv_sec;
-    micro_seconds = end.tv_usec - start.tv_usec;
-    double time = seconds + micro_seconds;
+    double time = (double)(end - start) / ((double) CLOCKS_PER_SEC);
+
     cout << fixed << setprecision(3) << "Execution time: " << time << "ms" << endl;
 
     delete(th);
