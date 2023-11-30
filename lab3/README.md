@@ -9,4 +9,4 @@ make
 ./main
 ```
 # Ссылка на отчет
-[Отчет в Google Documents]()
+[Отчет в Google Documents](https://docs.google.com/document/d/1INRlqOqAmSIIVvo7af-3VY3FI70IELPN/edit?usp=sharing&ouid=101030734348693683939&rtpof=true&sd=true)
