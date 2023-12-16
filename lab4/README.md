@@ -10,8 +10,8 @@ mkdir build
 cd build
 cmake ../CMakelists.txt
 make
-./lab_dyn_exe #динамические библиотеки
-./lab_stat_exe #статические библиотеки
+./lab_runtime_exe # в рантайме
+./lab_link_exe # на этапе линковки
 ```
 # Ссылка на отчет
 [Отчет в Google Documents](https://docs.google.com/document/d/1lMZRp84J2oH12M_nEzQpH3GVCqr8lgak/edit?usp=sharing&ouid=101030734348693683939&rtpof=true&sd=true)

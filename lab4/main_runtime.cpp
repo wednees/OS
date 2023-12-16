@@ -18,12 +18,12 @@ int main(){
     void* dl2_h = dlopen(dl2_name, RTLD_LAZY);
 
     if(!dl1_h){
-        perror("Error occured while opening first dynamic library");
+        perror("Error occurred while opening first dynamic library");
         exit (-1);
     }
     
     if(!dl2_h){
-        perror("Error occured while opening second dynamic library");
+        perror("Error occurred while opening second dynamic library");
         exit (-1);
     }
 
@@ -78,7 +78,7 @@ int main(){
 
             error = dlerror();
             if (error != NULL){
-                perror("Error occured while trying to find function in the first library");
+                perror("Error occurred while trying to find function in the first library");
                 dlclose(dl1_h);
                 exit (-1);
             }
@@ -105,7 +105,7 @@ int main(){
 
             error = dlerror();
             if (error != NULL){
-                perror("Error occured while trying to find function in the second library");
+                perror("Error occurred while trying to find function in the second library");
                 dlclose(dl2_h);
                 exit (-1);
             }

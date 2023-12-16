@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-#include "prime_count_lib/prime_count.hpp"
-#include "num_sys_lib/num_sys.hpp"
+#include "prime_count.hpp"
+#include "num_sys.hpp"
 
 using namespace std;
 
