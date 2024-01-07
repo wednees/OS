@@ -31,4 +31,4 @@ make
 ./control
 ```
 # Ссылка на отчет
-[Отчет в Google Documents (скоро будет, зуб даю)]()
+[Отчет в Google Documents](https://docs.google.com/document/d/1uDVQRjONYN1xGX5ECwd8wCFinbU2KDt9/edit?usp=sharing&ouid=101030734348693683939&rtpof=true&sd=true)

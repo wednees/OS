@@ -96,10 +96,6 @@ int main() {
                 }
             }
 
-            // Node* node_to_kill = search(root, id);
-            // delete_topology(node_to_kill);   
-            // send_and_receive(root, id, "remove", reply);
-
         } else if (!strcmp(command,"exec")) {
             char key[100];
             char buffer[100];
