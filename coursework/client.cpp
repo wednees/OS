@@ -112,9 +112,10 @@ int main(){
             if(check(reply, id)){
                 //strtok(reply, " ");
                 string is_ok(strtok(NULL, " "));
-                string name(strtok(NULL, " "));
+                // string name(strtok(NULL, " "));
 
                 if (is_ok == "ok"){
+                    string name(strtok(NULL, " "));
                     cout << "Выполнено подключение к игре '" << name << "'" << endl;
                     cout << "Игра началась, попробуйте отгадать число" << endl;
 
@@ -166,6 +167,10 @@ int main(){
                             }
                         }
                     }
+                }
+                else{
+                    cout << "Сожалею, но вы не можете подключиться ни к одной из существующий игр, но можете создать новую!" << endl;
+                    continue;
                 }
             }
         }

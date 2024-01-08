@@ -44,8 +44,8 @@ int main(){
 
     map <string, int> game_nums;
     map <string, int> game_players;
-    map <string, queue<int>> game_queue_1;
-    map <string, queue<int>> game_queue_2;
+    map <string, queue<int>> game_queue;
+    // map <string, queue<int>> game_queue_2;
 
     for(;;){
 
@@ -76,7 +76,7 @@ int main(){
                 int game_number = generate_random_number();
                 game_nums[name_for_creation] = game_number;
                 game_players[name_for_creation] = amount_of_players;
-                game_queue_1[name_for_creation].push(id);
+                game_queue[name_for_creation].push(id);
             }
             
             sprintf(reply,"%d ok", id);
@@ -86,17 +86,25 @@ int main(){
         else if (command == "connect"){
             id = atoi(strtok(NULL, " "));
             const char* name_for_connect;
+            bool flag_connected = false;
 
             for(const auto& [name, value]: game_players){
-                if ((game_queue_1[name].size() + game_queue_2[name].size()) <= value){
-                    game_queue_1[name].push(id);
+                if ((game_queue[name].size()) <= value){
+                    game_queue[name].push(id);
                     name_for_connect = name.c_str();
+                    flag_connected = true;
                     break;
                 }
             }
 
-            sprintf(reply,"%d ok %s", id, name_for_connect);
-            send_reply(respond_socket, reply);
+            if (flag_connected){
+                sprintf(reply,"%d ok %s", id, name_for_connect);
+                send_reply(respond_socket, reply);
+            }
+            else{
+                sprintf(reply,"%d notok", id);
+                send_reply(respond_socket, reply);
+            }
         }
 
         else if (command == "is"){
@@ -104,48 +112,57 @@ int main(){
             string name_for_play(strtok(NULL, " "));
             int number = atoi(strtok(NULL, " "));
 
-            if (game_queue_1[name_for_play].empty()){
-                int tmp = game_queue_2[name_for_play].size();
-                for(int i = 0; i < tmp; ++i){
-                    int id_tmp = game_queue_2[name_for_play].front();
-                    game_queue_2[name_for_play].pop();
-                    game_queue_1[name_for_play].push(id_tmp);
-                }
-            }
+            // if (game_queue_1[name_for_play].empty()){
+            //     int tmp = game_queue_2[name_for_play].size();
+            //     for(int i = 0; i < tmp; ++i){
+            //         int id_tmp = game_queue_2[name_for_play].front();
+            //         game_queue_2[name_for_play].pop();
+            //         game_queue_1[name_for_play].push(id_tmp);
+            //     }
+            // }
 
-            if (game_queue_1[name_for_play].front() != id){
+            if (game_queue[name_for_play].front() != id){
                 sprintf(reply, "%d wrongtime", id);
                 send_reply(respond_socket, reply);
+                continue;
             }
             else {
-                game_queue_1[name_for_play].pop();
-                game_queue_2[name_for_play].push(id);
+                game_queue[name_for_play].pop();
+                game_queue[name_for_play].push(id);
                 if (number == game_nums[name_for_play]){
                     
                     sprintf(reply, "%d win", id);
                     send_reply(respond_socket, reply);
                     
-                    while (!game_queue_1[name_for_play].empty()){
-                        sprintf(reply, "%d otherwin", game_queue_1[name_for_play].front());
-                        game_queue_1[name_for_play].pop();
-                        send_reply(respond_socket, reply);
+                    while (!game_queue[name_for_play].empty()){
+                        if (game_queue[name_for_play].front() != id){
+                            sprintf(reply, "%d otherwin", game_queue[name_for_play].front());
+                            game_queue[name_for_play].pop();
+                            send_reply(respond_socket, reply);
+                        }
                     }
+                    game_nums.erase(name_for_play);
+                    game_players.erase(name_for_play);
+                    game_queue.erase(name_for_play);
+                    continue;
 
-                     while (!game_queue_2[name_for_play].empty()){
-                        sprintf(reply, "%d otherwin", game_queue_2[name_for_play].front());
-                        game_queue_2[name_for_play].pop();
-                        send_reply(respond_socket, reply);
-                    }
+                    //  while (!game_queue_2[name_for_play].empty()){
+                    //     sprintf(reply, "%d otherwin", game_queue_2[name_for_play].front());
+                    //     game_queue_2[name_for_play].pop();
+                    //     send_reply(respond_socket, reply);
+                    // }
                     //pobeda
                 }
                 else if (number > game_nums[name_for_play]){
                     sprintf(reply, "%d incorrect less", id);
                     send_reply(respond_socket, reply);
+                    continue;
                     // men'che
                 }
                 else {
                     sprintf(reply, "%d incorrect more", id);
                     send_reply(respond_socket, reply);
+                    continue;
                     // bol'che
                 }
             }
@@ -154,31 +171,31 @@ int main(){
         else if (command == "leave"){
             id = atoi(strtok(NULL, " "));
             string name_for_leave(strtok(NULL, " "));
-            int size_1 = game_queue_1[name_for_leave].size();
+            int size = game_queue[name_for_leave].size();
 
-            for(int i = 0; i < size_1; ++i){
-                int leave_tmp = game_queue_1[name_for_leave].front();
-                game_queue_1[name_for_leave].pop();
+            for(int i = 0; i < size; ++i){
+                int leave_tmp = game_queue[name_for_leave].front();
+                game_queue[name_for_leave].pop();
                 if (leave_tmp != id){
-                    game_queue_2[name_for_leave].push(leave_tmp);
+                    game_queue[name_for_leave].push(leave_tmp);
                 }
                 else{
                     break;
                 }
             }
 
-            int size_2 = game_queue_2[name_for_leave].size();
+            // int size_2 = game_queue_2[name_for_leave].size();
 
-            for(int i = 0; i < size_2; ++i){
-                int leave_tmp = game_queue_2[name_for_leave].front();
-                game_queue_2[name_for_leave].pop();
-                if (leave_tmp != id){
-                    game_queue_1[name_for_leave].push(leave_tmp);
-                }
-                else{
-                    break;
-                }
-            }
+            // for(int i = 0; i < size_2; ++i){
+            //     int leave_tmp = game_queue_2[name_for_leave].front();
+            //     game_queue_2[name_for_leave].pop();
+            //     if (leave_tmp != id){
+            //         game_queue_1[name_for_leave].push(leave_tmp);
+            //     }
+            //     else{
+            //         break;
+            //     }
+            // }
             // sprintf(reply, "%d stop", id);
             // send_reply(respond_socket, reply);
             // stop game
