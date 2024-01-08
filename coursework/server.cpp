@@ -88,7 +88,7 @@ int main(){
             const char* name_for_connect;
 
             for(const auto& [name, value]: game_players){
-                if ((game_queue_1[name].size() + game_queue_2[name].size()) < value){
+                if ((game_queue_1[name].size() + game_queue_2[name].size()) <= value){
                     game_queue_1[name].push(id);
                     name_for_connect = name.c_str();
                     break;

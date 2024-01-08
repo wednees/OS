@@ -14,7 +14,7 @@ using namespace std;
 #define MAX_SIZE 100
 
 void print_menu(){
-    cout << "Добра пожаловать в игру 'Быки и Коровы'" << endl;
+    cout << "Добро пожаловать в игру 'Быки и Коровы'" << endl;
     cout << "Доступные команды:" << endl;
     cout << "  -create <NAME> <AMOUNT OF PLAYERS> - создать игру" << endl;
     cout << "  -connect - подключиться к игре" << endl;
@@ -36,7 +36,7 @@ void send_and_receive(char* message, char* reply) {
     zmq_msg_send(&req_msg, request_socket, 0);
     zmq_msg_close(&req_msg);
 
-    // cout << "Control: sendind a message '" << message << "' to " << id << endl;
+    // cout << "Control: sendind a message '" << message << "'" << endl;
 
     zmq_msg_t rep_msg;
     zmq_msg_init(&rep_msg);
@@ -94,7 +94,7 @@ int main(){
             send_and_receive(message, reply);
 
             if(check(reply, id)){
-                strtok(reply, " ");
+                //strtok(reply, " ");
                 string is_ok(strtok(NULL, " "));
                 if (is_ok == "ok"){
                     cout << "Игра с именем '" << name_for_create << "' была успешно создана" << endl;
@@ -110,12 +110,13 @@ int main(){
             send_and_receive(message, reply);
 
             if(check(reply, id)){
-                strtok(reply, " ");
+                //strtok(reply, " ");
                 string is_ok(strtok(NULL, " "));
                 string name(strtok(NULL, " "));
 
                 if (is_ok == "ok"){
                     cout << "Выполнено подключение к игре '" << name << "'" << endl;
+                    cout << "Игра началась, попробуйте отгадать число" << endl;
 
                     while(true){
                         string game_command;
@@ -133,7 +134,7 @@ int main(){
                             sprintf(message, "is %d %s %d", id, name.c_str(), t);
                             send_and_receive(message, reply);
                             if (check(reply, id)){
-                                strtok(reply, " ");
+                                //strtok(reply, " ");
                                 string result(strtok(NULL, " "));
                                 if (result == "wrongtime"){
                                     cout << "Не ваша очередь!" << endl;
